@@ -15,6 +15,13 @@
 }
 
 #player,
-#background {
+#background,
+#obstacle1,
+#bgOne {
   display: none;
+}
+
+#canvas1 {
+  background-size: contain;
+  background-position: 0 0;
 }

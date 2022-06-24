@@ -27,19 +27,19 @@ class Layer {
 class Background {
   constructor(game) {
     this.game = game;
-    this.width = 1667;
+    this.width = 1024;
     this.height = 500;
-    this.layer1image = document.getElementById("background");
+    this.bgOneimage = document.getElementById("bgOne");
 
-    this.layer1 = new Layer(
+    this.bgOne = new Layer(
       this.game,
       this.width,
       this.height,
-      0,
-      this.layer1image
+      1,
+      this.bgOneimage
     );
 
-    this.backgroundLayers = [this.layer1];
+    this.backgroundLayers = [this.bgOne];
   }
   update() {
     this.backgroundLayers.forEach((layer) => {

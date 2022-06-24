@@ -1,19 +1,28 @@
 class Player {
   constructor(game) {
     this.game = game;
-    this.width = 80;
+    this.width = 85;
     this.height = 80;
     this.x = 0;
-    this.y = this.game.height - this.height;
+    this.y = this.game.height - this.height - this.game.groundMargin;
     this.vy = 0;
-    this.weight = 1;
+    this.weight = 0.5;
     this.image = document.getElementById("player");
     this.frameX = 0;
     this.frameY = 0;
+    this.maxFrame;
+    this.fps = 15;
+    this.frameInterval = 1000 / this.fps;
+    this.frameTimer = 0;
+
     this.speed = 0;
-    this.maxSpeed = 10;
+    this.maxSpeed = 4;
+    this.states = [new Sitting(this), new Running(this), new FLYING(this)];
+    this.currentState = this.states[0];
+    this.currentState.enter();
   }
-  update(input) {
+  update(input, deltaTime) {
+    this.currentState.handleInput(input);
     //horizontal movement
     this.x += this.speed;
     //include:method determines whether an array includes a certain value among entries, returning true orfalse
@@ -23,16 +32,31 @@ class Player {
     if (this.x < 0) this.x = 0;
     if (this.x > this.game.width - this.width)
       this.x = this.game.width - this.width;
+
     //vertical movement
+
+    if (input.includes("ArrowUp")) {
+      if (this.y <= this.game.ceilingMargin) this.vy = 0;
+      else this.vy -= 2;
+    }
     this.y += this.vy;
-    if (input.includes("ArrowUp") && this.onGround()) this.vy -= 20;
-    this.y += this.vy;
+
     if (!this.onGround()) this.vy += this.weight;
     else this.vy = 0;
+
+    if (this.y < this.game.ceilingMargin) this.y = this.game.ceilingMargin;
+
+    // sprite animation
+
+    if (this.frameTimer > this.frameInterval) {
+      this.frameTimer = 0;
+      if (this.frameX < this.maxFrame) this.frameX++;
+      else this.frameX = 0;
+    } else {
+      this.frameTimer += deltaTime;
+    }
   }
   draw(context) {
-    // context.fillStyle = "red";
-    // context.fillRect(this.x, this.y, this.width, this.height);
     context.drawImage(
       this.image,
       this.frameX * this.width,
@@ -46,7 +70,10 @@ class Player {
     );
   }
   onGround() {
-    return this.y >= this.game.height - this.height;
+    return this.y >= this.game.height - this.height - this.game.groundMargin;
   }
-  setState() {}
+  setState(state) {
+    this.currentState = this.states[state];
+    this.currentState.enter();
+  }
 }

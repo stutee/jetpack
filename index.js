@@ -16,17 +16,63 @@ window.addEventListener("load", function () {
 
       this.player = new Player(this);
       this.input = new InputHandler();
+
+      this.obstacles = [];
+      this.obstacleTimer = 0;
+      this.obstacleInterval = 3000; //in ms
     }
     update(deltaTime) {
       this.background.update();
       this.player.update(this.input.keys, deltaTime);
+
+      // handle obstacles
+      // obstacles appear after obstacleInterval
+      if (this.obstacleTimer > this.obstacleInterval) {
+        this.addObstacle();
+        this.obstacleTimer = 0;
+      } else {
+        this.obstacleTimer += deltaTime;
+      }
+
+      // updating each obstacles
+      this.obstacles.forEach((obstacle) => {
+        obstacle.update(deltaTime);
+
+        // remove the obstacle from the obstacles array
+        // that are out from the view
+        if (obstacle.markedForDeletion) {
+          this.obstacles.splice(this.obstacles.indexOf(obstacle), 1);
+        }
+      });
     }
 
     draw(context) {
       this.background.draw(context);
       this.player.draw(context);
+
+      // drawing each obstacles
+      this.obstacles.forEach((obstacle) => {
+        obstacle.draw(context);
+      });
+    }
+    addObstacle() {
+      let choices = [
+        new Lighting1(this),
+        new Lighting2(this),
+        new Lighting3(this),
+        new Lighting4(this),
+        new Lighting5(this),
+        new Lighting6(this),
+        new Rocket(this),
+      ];
+      let choice = randomIntFromInterval(0, choices.length - 1);
+      let choosen = choices[choice];
+
+      this.obstacles.push(choosen);
+      console.log(this.obstacles);
     }
   }
+
   const game = new Game(canvas.width, canvas.height);
   console.log(game);
   let lastTime = 0;

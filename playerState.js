@@ -1,8 +1,9 @@
 //simple enum object that will pair values and names of each state
 const states = {
-  SITTING: 0,
+  STANDING: 0,
   RUNNING: 1,
   FLYING: 2,
+  FALLING: 3,
 };
 
 class State {
@@ -11,9 +12,9 @@ class State {
   }
 }
 
-class Sitting extends State {
+class Standing extends State {
   constructor(player) {
-    super("SITTING");
+    super("STANDING");
     this.player = player;
   }
   enter() {
@@ -23,9 +24,7 @@ class Sitting extends State {
     this.player.frameY = 0;
   }
   handleInput(input) {
-    if (input.includes("ArrowLeft") || input.includes("ArrowRight")) {
-      this.player.setState(states.RUNNING);
-    } else if (input.includes("ArrowUp")) {
+    if (input.includes("ArrowUp")) {
       this.player.setState(states.FLYING);
     }
   }
@@ -49,7 +48,7 @@ class Running extends State {
   }
 }
 
-class FLYING extends State {
+class Flying extends State {
   constructor(player) {
     super("FLYING");
     this.player = player;
@@ -62,6 +61,27 @@ class FLYING extends State {
     this.player.frameY = 1;
   }
   handleInput(input) {
-    if (this.player.onGround()) this.player.setState(states.SITTING);
+    if (this.player.onGround()) this.player.setState(states.FALLING);
+  }
+}
+
+class Falling extends State {
+  constructor(player) {
+    super("FALLING");
+    this.player = player;
+  }
+  enter() {
+    this.player.frameX = 0;
+
+    this.player.maxFrame = 3;
+
+    this.player.frameY = 2;
+  }
+  handleInput(input) {
+    if (this.player.frameX === this.player.maxFrame)
+      this.player.setState(states.RUNNING);
+    if (input.includes("ArrowUp")) {
+      this.player.setState(states.FLYING);
+    }
   }
 }

@@ -15,14 +15,27 @@ window.addEventListener("load", function () {
       this.ceilingMargin = 50;
 
       this.player = new Player(this);
-      this.input = new InputHandler();
-
+      this.input = new InputHandler(this);
+      this.UI = new UI(this);
+      //coins
       this.obstacles = [];
       this.obstacleTimer = 0;
       this.obstacleInterval = 3000; //in ms
+
+      // coins
+      this.coins = [];
+      this.coinTimer = 0;
+      this.coinInterval = 5000; //in ms
+
+      this.debug = true;
+
+      this.acquireCoin = 0;
+      this.distanceCovered = 0;
+      this.gameEnd = false;
     }
     update(deltaTime) {
       this.background.update();
+      this.distanceCovered++;
       this.player.update(this.input.keys, deltaTime);
 
       // handle obstacles
@@ -44,6 +57,26 @@ window.addEventListener("load", function () {
           this.obstacles.splice(this.obstacles.indexOf(obstacle), 1);
         }
       });
+
+      // handle coins
+      // obstacles appear after obstacleInterval
+      if (this.coinTimer > this.coinInterval) {
+        this.addCoin();
+        this.coinTimer = 0;
+      } else {
+        this.coinTimer += deltaTime;
+      }
+
+      // updating each obstacles
+      this.coins.forEach((coin) => {
+        coin.update(deltaTime);
+
+        // remove the obstacle from the obstacles array
+        // that are out from the view
+        if (coin.markedForDeletion) {
+          this.coins.splice(this.coins.indexOf(coin), 1);
+        }
+      });
     }
 
     draw(context) {
@@ -54,6 +87,16 @@ window.addEventListener("load", function () {
       this.obstacles.forEach((obstacle) => {
         obstacle.draw(context);
       });
+
+      // drawing each obstacles
+      this.coins.forEach((coin) => {
+        coin.draw(context);
+      });
+
+      this.UI.draw(context);
+    }
+    addCoin() {
+      new CoinGenerator(this);
     }
     addObstacle() {
       let choices = [
@@ -70,6 +113,10 @@ window.addEventListener("load", function () {
 
       this.obstacles.push(choosen);
       console.log(this.obstacles);
+      choice = randomIntFromInterval(0, choices.length - 1);
+      choosen = choices[choice];
+
+      this.obstacles.push(choosen);
     }
   }
 

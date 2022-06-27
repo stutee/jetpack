@@ -10,6 +10,7 @@ class Obstacle {
   update(deltaTime) {
     this.x -= this.speedX + this.game.speed;
     this.y += this.speedY;
+    // not currently used
     if (this.frameTimer > this.frameInterval) {
       this.frameTimer = 0;
       if (this.frameX < this.maxFrame) this.frameX++;
@@ -21,6 +22,9 @@ class Obstacle {
     if (this.x + this.width < 0) this.markedForDeletion = true;
   }
   draw(context) {
+    if (this.game.debug) {
+      context.strokeRect(this.x, this.y, this.width, this.height);
+    }
     context.drawImage(
       this.image,
       this.frameX * this.width,
@@ -59,6 +63,8 @@ class Lighting1 extends Lighting {
     super(game);
     this.width = 111;
     this.height = 243;
+    this.width = 60;
+    this.height = 130;
     this.y = randomIntFromInterval(
       this.game.ceilingMargin,
       this.game.height - this.game.groundMargin - this.height
@@ -75,6 +81,8 @@ class Lighting2 extends Lighting {
     super(game);
     this.width = 243;
     this.height = 111;
+    this.width = 130;
+    this.height = 60;
     this.y = randomIntFromInterval(
       this.game.ceilingMargin,
       this.game.height - this.game.groundMargin - this.height
@@ -91,6 +99,8 @@ class Lighting3 extends Lighting {
     super(game);
     this.width = 119;
     this.height = 392;
+    this.width = 40;
+    this.height = 130;
     this.y = randomIntFromInterval(
       this.game.ceilingMargin,
       this.game.height - this.game.groundMargin - this.height
@@ -107,6 +117,8 @@ class Lighting4 extends Lighting {
     super(game);
     this.width = 392;
     this.height = 119;
+    this.width = 185;
+    this.height = 55;
     this.y = randomIntFromInterval(
       this.game.ceilingMargin,
       this.game.height - this.game.groundMargin - this.height
@@ -123,6 +135,8 @@ class Lighting5 extends Lighting {
     super(game);
     this.width = 300;
     this.height = 301;
+    this.width = 110;
+    this.height = 110;
     this.y = randomIntFromInterval(
       this.game.ceilingMargin,
       this.game.height - this.game.groundMargin - this.height
@@ -139,6 +153,9 @@ class Lighting6 extends Lighting {
     super(game);
     this.width = 247;
     this.height = 244;
+
+    this.width = 110;
+    this.height = 110;
     this.y = randomIntFromInterval(
       this.game.ceilingMargin,
       this.game.height - this.game.groundMargin - this.height
@@ -156,10 +173,15 @@ class Rocket extends Obstacle {
     this.game = game;
     this.speedX = 15;
     this.speedY = 0;
-    this.width = 174;
-    this.height = 88;
+
+    this.width = 100;
+    this.height = 50;
+
     this.x = this.game.width;
-    this.y = this.game.player.y;
+    this.y =
+      this.game.player.y +
+      Math.floor(this.game.player.height / 2) -
+      Math.floor(this.height / 2);
     // this.y = randomIntFromInterval(this.game.ceilingMargin, this.game.height - this.game.groundMargin - this.height);
 
     this.maxFrame = 0;

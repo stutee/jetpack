@@ -24,6 +24,7 @@
 #obstacle6,
 #rocket,
 #rocket-warning,
+#coins,
 #bgOne {
   display: none;
 }
@@ -31,13 +32,4 @@
 #canvas1 {
   background-size: contain;
   background-position: 0 0;
-}
-
-@keyframes animatedBackground {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: -100% 0;
-  }
 }

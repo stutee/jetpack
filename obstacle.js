@@ -43,15 +43,14 @@ class Lighting extends Obstacle {
   constructor(game) {
     super();
     this.game = game;
+    this.name = "Lighting";
     this.speedX = 0;
     this.speedY = 0;
 
     this.x = this.game.width;
-    // this.y = randomIntFromInterval(this.game.ceilingMargin, this.game.height - this.game.groundMargin - this.height);
 
     this.maxFrame = 0;
-
-    // this.image = document.getElementById("obstacle1");
+    this.audio = document.getElementById("zap-audio");
   }
   update(deltaTime) {
     super.update(deltaTime);
@@ -67,7 +66,10 @@ class Lighting1 extends Lighting {
     this.height = 130;
     this.y = randomIntFromInterval(
       this.game.ceilingMargin,
-      this.game.height - this.game.groundMargin - this.height
+      this.game.height -
+        this.game.groundMargin -
+        this.height -
+        this.game.passMargin
     );
     this.image = document.getElementById("obstacle1");
   }
@@ -85,7 +87,10 @@ class Lighting2 extends Lighting {
     this.height = 60;
     this.y = randomIntFromInterval(
       this.game.ceilingMargin,
-      this.game.height - this.game.groundMargin - this.height
+      this.game.height -
+        this.game.groundMargin -
+        this.height -
+        this.game.passMargin
     );
     this.image = document.getElementById("obstacle2");
   }
@@ -103,7 +108,10 @@ class Lighting3 extends Lighting {
     this.height = 130;
     this.y = randomIntFromInterval(
       this.game.ceilingMargin,
-      this.game.height - this.game.groundMargin - this.height
+      this.game.height -
+        this.game.groundMargin -
+        this.height -
+        this.game.passMargin
     );
     this.image = document.getElementById("obstacle3");
   }
@@ -121,46 +129,12 @@ class Lighting4 extends Lighting {
     this.height = 55;
     this.y = randomIntFromInterval(
       this.game.ceilingMargin,
-      this.game.height - this.game.groundMargin - this.height
+      this.game.height -
+        this.game.groundMargin -
+        this.height -
+        this.game.passMargin
     );
     this.image = document.getElementById("obstacle4");
-  }
-  update(deltaTime) {
-    super.update(deltaTime);
-  }
-}
-
-class Lighting5 extends Lighting {
-  constructor(game) {
-    super(game);
-    this.width = 300;
-    this.height = 301;
-    this.width = 110;
-    this.height = 110;
-    this.y = randomIntFromInterval(
-      this.game.ceilingMargin,
-      this.game.height - this.game.groundMargin - this.height
-    );
-    this.image = document.getElementById("obstacle5");
-  }
-  update(deltaTime) {
-    super.update(deltaTime);
-  }
-}
-
-class Lighting6 extends Lighting {
-  constructor(game) {
-    super(game);
-    this.width = 247;
-    this.height = 244;
-
-    this.width = 110;
-    this.height = 110;
-    this.y = randomIntFromInterval(
-      this.game.ceilingMargin,
-      this.game.height - this.game.groundMargin - this.height
-    );
-    this.image = document.getElementById("obstacle6");
   }
   update(deltaTime) {
     super.update(deltaTime);
@@ -171,6 +145,8 @@ class Rocket extends Obstacle {
   constructor(game) {
     super();
     this.game = game;
+    this.name = "Rocket";
+
     this.speedX = 15;
     this.speedY = 0;
 
@@ -182,13 +158,16 @@ class Rocket extends Obstacle {
       this.game.player.y +
       Math.floor(this.game.player.height / 2) -
       Math.floor(this.height / 2);
-    // this.y = randomIntFromInterval(this.game.ceilingMargin, this.game.height - this.game.groundMargin - this.height);
 
     this.maxFrame = 0;
 
     this.image = document.getElementById("rocket");
+
+    this.audio = document.getElementById("rocket-audio");
+    this.audioExplosion = document.getElementById("explosion-audio");
   }
   update(deltaTime) {
     super.update(deltaTime);
+    if (this.frameX === 0) this.audio.play();
   }
 }

@@ -17,6 +17,8 @@ class Coin {
     this.y;
 
     this.image = document.getElementById("coins");
+
+    this.audio = document.getElementById("coin-audio");
   }
 
   update(deltaTime) {
@@ -47,6 +49,44 @@ class Coin {
       this.width,
       this.height
     );
+  }
+}
+
+class PowerUpOne extends Coin {
+  constructor(game) {
+    super(game);
+    this.game = game;
+    this.name = "CoinBooster";
+    this.maxFrame = 2;
+    this.width = Math.floor(213 / (this.maxFrame + 1));
+    this.height = 81;
+
+    this.x = this.game.width;
+    this.y = randomIntFromInterval(
+      this.game.ceilingMargin,
+      this.game.height - this.game.groundMargin - this.height
+    );
+
+    this.image = document.getElementById("power-up-1");
+  }
+}
+
+class PowerUpTwo extends Coin {
+  constructor(game) {
+    super(game);
+    this.game = game;
+    this.name = "DistanceBooster";
+    this.maxFrame = 3;
+    this.width = Math.floor(232 / (this.maxFrame + 1));
+    this.height = 50;
+
+    this.x = this.game.width;
+    this.y = randomIntFromInterval(
+      this.game.ceilingMargin,
+      this.game.height - this.game.groundMargin - this.height
+    );
+
+    this.image = document.getElementById("power-up-2");
   }
 }
 

@@ -16,13 +16,14 @@ class Player {
     this.frameInterval = 1000 / this.fps;
     this.frameTimer = 0; //time maintained
 
-    this.speed = 0;
-    this.maxSpeed = 4;
     this.states = [
       new Standing(this),
       new Running(this),
       new Flying(this),
       new Falling(this),
+      new ZAP(this),
+      new BURNED(this),
+      new DEAD(this),
     ];
     this.currentState = this.states[0];
     this.currentState.enter();
@@ -30,25 +31,19 @@ class Player {
   update(input, deltaTime) {
     this.checkCollision();
     this.currentState.handleInput(input);
-    //horizontal movement
-    this.x += this.speed;
-
-    if (this.x < 0) this.x = 0;
-    if (this.x > this.game.width - this.width)
-      this.x = this.game.width - this.width;
 
     //vertical movement
 
     if (input.includes("ArrowUp")) {
       if (this.y <= this.game.ceilingMargin) this.vy = 0;
-      else this.vy -= 2;
+      else this.vy -= 1.25;
     }
-    this.y += this.vy;
 
+    this.y += this.vy;
     if (!this.onGround()) this.vy += this.gravity;
     else this.vy = 0;
 
-    if (this.y < this.game.ceilingMargin) this.y = this.game.ceilingMargin;
+    if (this.y < this.game.ceilingMargin) this.y = this.game.ceilingMargin; //ceiling condn remains on ceiling
 
     // sprite animation
 
@@ -85,7 +80,8 @@ class Player {
     this.currentState.enter();
   }
   checkCollision() {
-    // for lighting
+    // // for lighting
+    if (this.game.boost.enable) return;
     this.game.obstacles.forEach((obstacle) => {
       if (
         obstacle.x < this.x + this.width &&
@@ -95,10 +91,16 @@ class Player {
       ) {
         // collision detected
         obstacle.markedForDeletion = true;
-        this.game.gameEnd = true;
-        this.game.distance++;
-      } else {
-        // no collision
+        this.game.gameOver = true;
+        this.game.storage.totalCoin = this.game.acquireCoin;
+        this.game.storage.highestDistance = this.game.distanceCovered;
+        if (obstacle.name === "Rocket") {
+          this.setState(5);
+          obstacle.audioExplosion.play();
+        } else {
+          this.setState(4);
+          obstacle.audio.play();
+        }
       }
     });
 
@@ -113,8 +115,31 @@ class Player {
         // collision detected
         coin.markedForDeletion = true;
         this.game.acquireCoin++;
-      } else {
-        // no collision
+        coin.audio.play();
+      }
+    });
+
+    // for powerUps
+    this.game.powerUps.forEach((powerUp) => {
+      if (
+        powerUp.x < this.x + this.width &&
+        powerUp.x + powerUp.width > this.x &&
+        powerUp.y < this.y + this.height &&
+        powerUp.y + powerUp.height > this.y
+      ) {
+        // collision detected
+        powerUp.markedForDeletion = true;
+        if (powerUp.name === "CoinBooster") {
+          this.game.acquireCoin += 10;
+        }
+        if (powerUp.name === "DistanceBooster") {
+          this.game.distanceCovered += 1000;
+          this.game.boost.enable = true;
+          this.game.boost.currSpeed = this.game.speed;
+          this.game.boost.start = this.game.distanceCovered;
+          this.game.boost.covered = this.game.boost.start;
+        }
+        powerUp.audio.play();
       }
     });
   }

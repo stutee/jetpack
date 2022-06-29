@@ -1,38 +1,38 @@
-// initiating game when window load
-window.addEventListener("load", function () {
-  const canvas = document.getElementById("canvas1");
-  const ctx = canvas.getContext("2d");
-  canvas.width = 800;
-  canvas.height = 500;
-  var game = new Game(canvas.width, canvas.height);
+const express = require("express");
+const fs = require("fs");
+const PORT = 3000;
 
-  let image = document.getElementById("initial-background");
+const app = express();
+const bodyParser = require("body-parser");
 
-  ctx.drawImage(image, 0, 0, game.width, game.height);
-  canvas.addEventListener("click", function () {
-    ctx.fillRect(0, 0, game.width, game.height);
-    ctx.drawImage(image, 0, 0, game.width, game.height);
-    if (game.gameStart) {
-      console.log(game);
-      game.gameStart = false;
-      animate(0);
-    }
-    if (game.gameOver) {
-      game = new Game(canvas.width, canvas.height);
-    }
+app.use(bodyParser.json());
+
+app.use(express.static("./jetpack"));
+
+app.get("/api/getdata/", (req, res) => {
+  fs.readFile("./dataStorage.txt", "utf8", function (err, data) {
+    let splitData = data.split(" ");
+    let coin = splitData[0];
+    let distance = splitData[1];
+
+    res.json({ totalCoin: coin, highestDistance: distance });
   });
-
-  let lastTime = 0;
-
-  function animate(timeStamp) {
-    const deltaTime = timeStamp - lastTime;
-    lastTime = timeStamp;
-    console.log(timeStamp, lastTime, deltaTime);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    game.update(deltaTime);
-    game.draw(ctx);
-    let animation = requestAnimationFrame(animate);
-
-    if (game.gameOver) cancelAnimationFrame(animation);
-  }
 });
+
+app.post("/api/postdata/", function (req, res) {
+  // console.log(request.body);      // your JSON
+  let jsondata = req.body;
+  let data = "" + jsondata.totalCoin + " " + jsondata.highestDistance;
+  console.log("data", data, typeof jsondata);
+  fs.writeFile("./dataStorage.txt", data, (err) => {
+    // throws an error, you could also catch it here
+    if (err) throw err;
+
+    // success case, the file was saved
+    console.log("data saved");
+  });
+  console.log(jsondata);
+  res.sendStatus(200);
+});
+
+app.listen(PORT, () => console.log(`Server is now listening on port ${PORT}`));

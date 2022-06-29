@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap"
+      rel="stylesheet"
+    />
+    <title>JetPack JoyRide</title>
+  </head>
+  <body>
+    <canvas id="canvas1"></canvas>
+
+    <img id="player" src="./assets/image/barrysprite1.png" alt="player" />
+
+    <img id="bgOne" src="./assets/image/bg.jpg" alt="bgOne" />
+
+    <img id="obstacle1" src="./assets/image/obstacle1 1.png" alt="obstacle1" />
+    <img id="obstacle2" src="./assets/image/obstacle2 1.png" alt="obstacle2" />
+    <img id="obstacle3" src="./assets/image/obstacle3 1.png" alt="obstacle3" />
+    <img id="obstacle4" src="./assets/image/obstacle4 1.png" alt="obstacle4" />
+
+    <img id="coins" src="./assets/image/coins 1.png" alt="coins" />
+    <img id="rocket" src="./assets/image/rocket 2.png" alt="rocket" />
+
+    <img
+      id="power-up-1"
+      src="./assets/image/power-up 1 1.png"
+      alt="power-up-1"
+    />
+    <img id="power-up-2" src="./assets/image/power-up 2.png" alt="power-up-2" />
+    <img
+      id="player-dead"
+      src="./assets/image/playerdead.png"
+      alt="player-dead"
+    />
+    <img
+      id="initial-background"
+      src="./assets/image/initial-background.png"
+      alt="initial-background"
+    />
+    <img id="game-over" src="./assets/image/game-over.jpg" alt="game-over" />
+
+    <audio id="coin-audio">
+      <source src="./assets/audio/coins.mp3" type="audio/mp3" />
+      Your browser does not support the audio tag.
+    </audio>
+    <audio id="rocket-warning-audio">
+      <source src="./assets/audio/warning.mp3" type="audio/mp3" />
+      Your browser does not support the audio tag.
+    </audio>
+    <audio id="rocket-audio">
+      <source src="./assets/audio/rocket.mp3" type="audio/mp3" />
+      Your browser does not support the audio tag.
+    </audio>
+    <audio id="running-audio">
+      <source src="./assets/audio/runningC.mp3" type="audio/mp3" />
+      Your browser does not support the audio tag.
+    </audio>
+    <audio id="bg-audio">
+      <source src="./assets/audio/bg.wav" type="audio/wav" />
+      Your browser does not support the audio tag.
+    </audio>
+    <audio id="zap-audio">
+      <source src="./assets/audio/zap.mp3" type="audio/mp3" />
+      Your browser does not support the audio tag.
+    </audio>
+    <audio id="explosion-audio">
+      <source src="./assets/audio/explosion.mp3" type="audio/mp3" />
+      Your browser does not support the audio tag.
+    </audio>
+
+    <script src="./js/const.js"></script>
+    <script src="./js/util.js"></script>
+    <script src="./js/UI.js"></script>
+
+    <script src="./js/Item.js"></script>
+    <script src="./js/obstacle.js"></script>
+
+    <script src="./js/background.js"></script>
+    <script src="./js/input.js"></script>
+    <script src="./js/playerState.js"></script>
+    <script src="./js/player.js"></script>
+    <script src="./js/Game.js"></script>
+    <script src="./js/index.js"></script>
+  </body>
+</html>

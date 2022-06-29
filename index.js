@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
 
-app.use(express.static("./jetpack"));
+app.use(express.static("./jetPack-joyRide"));
 
 app.get("/api/getdata/", (req, res) => {
   fs.readFile("./dataStorage.txt", "utf8", function (err, data) {

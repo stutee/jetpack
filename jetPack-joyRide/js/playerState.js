@@ -33,7 +33,6 @@ class Standing extends State {
 
     this.player.frameY = 0;
     this.player.audio = document.getElementById("running-audio");
-    // this.player.audio.play();
   }
   handleInput(input) {
     this.player.audio.play();

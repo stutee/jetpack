@@ -132,7 +132,7 @@ class Game {
         this.boost.covered++;
       }
     }
-
+    //speed of  game increases as distance increases
     if (!this.boost.enable && !this.gameOver) {
       if (this.speed < this.maxSpeed) {
         if (this.distanceCovered % 1000 === 0) this.speed += 3;
@@ -274,7 +274,5 @@ class Game {
     let choosen = choices[choice];
 
     this.obstacles.push(choosen);
-
-    console.log(this.obstacles);
   }
 }

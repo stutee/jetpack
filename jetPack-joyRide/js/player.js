@@ -75,10 +75,6 @@ class Player {
    * @param {Canvas drawing context} context
    */
   draw(context) {
-    if (this.game.debug) {
-      context.strokeRect(this.x, this.y, this.width, this.height);
-    }
-
     context.drawImage(
       this.image,
       this.frameX * this.width,

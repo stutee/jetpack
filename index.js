@@ -20,9 +20,8 @@ app.get("/api/getdata/", (req, res) => {
 });
 
 app.post("/api/postdata/", function (req, res) {
-  // console.log(request.body);      // your JSON
   let jsondata = req.body;
-  let data = "" + jsondata.totalCoin + " " + jsondata.highestDistance;
+  let data = `${jsondata.totalCoin} ${jsondata.highestDistance}`;
   console.log("data", data, typeof jsondata);
   fs.writeFile("./dataStorage.txt", data, (err) => {
     // throws an error, you could also catch it here
